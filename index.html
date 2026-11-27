@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Beceri Haritası Kapsamı · AI-LA</title>
+<meta name="description" content="AI-LA beceri haritası: Maarif Modeli bileşenleri ve sınıfa göre hangi ürünün hangi beceriye veri gönderdiği.">
+<link rel="icon" href="img/aila_mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;0,800;1,800&family=Inter:wght@400;500;600;700&display=swap&subset=latin-ext" rel="stylesheet">
+<style>
+:root{
+  --indigo:#3A38B0; --murekkep:#23215C; --vurgu:#4F5BF9; --mavi-metin:#236A9E;
+  --zemin:#F7F5FF; --kart:#FFFFFF; --yumusak:#EFECFF; --kenar:#E3DEFD; --soluk:#5B5A86; --lila:#B9B0FF;
+  --basari:#1F9D6B;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--zemin); color:var(--murekkep); font:400 16px/1.55 Inter,system-ui,sans-serif}
+.sayfa{max-width:1180px; margin:0 auto; padding:28px 24px 48px}
+header{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap}
+header img{height:34px; width:auto; display:block}
+header .etiket{font:600 13px Inter; color:var(--soluk); padding:5px 12px; border:1px solid var(--kenar); border-radius:999px; background:var(--kart)}
+h1{margin:30px 0 8px; font:800 clamp(30px,4.6vw,48px)/1.08 Poppins,sans-serif; letter-spacing:-1px; color:var(--indigo); text-wrap:balance}
+h1 em{font-style:italic; color:var(--vurgu)}
+.giris{margin:0; max-width:720px; color:var(--soluk); font-size:17px}
+
+.secici{margin:26px 0 8px; display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.secici span{font:700 15px Poppins; color:var(--murekkep)}
+.siniflar{display:flex; gap:6px; flex-wrap:wrap; padding:5px; background:var(--kart); border:1px solid var(--kenar); border-radius:16px}
+.siniflar button{min-width:46px; height:42px; border:0; border-radius:11px; background:transparent; font:700 16px Poppins; color:var(--soluk); cursor:pointer; transition:background .15s,color .15s}
+.siniflar button:hover{background:var(--yumusak); color:var(--indigo)}
+.siniflar button[aria-pressed="true"]{background:linear-gradient(100deg,#3A38B0,#4F5BF9); color:#fff}
+.ozet{margin:6px 0 24px; color:var(--soluk); font-size:15px}
+.ozet b{color:var(--murekkep)}
+
+.izgara{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:18px}
+.izgara > .alan{grid-column:span 2}
+.izgara > .alan:nth-child(5),.izgara > .alan:nth-child(6){grid-column:span 3}
+.alan{background:var(--kart); border:1px solid var(--kenar); border-radius:22px; padding:20px 20px 16px; display:flex; flex-direction:column; gap:12px}
+.izgara > .alan.genis{grid-column:1 / -1}
+.alan-ust{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap}
+.alan h2{margin:0; font:800 21px/1.2 Poppins; color:var(--indigo)}
+.rozet{font:600 12px Inter; padding:3px 10px; border-radius:999px; white-space:nowrap}
+.rozet.maarif{background:var(--yumusak); color:var(--indigo)}
+.rozet.aila{background:#E8F1FA; color:var(--mavi-metin)}
+.kalem{padding:12px 0 2px; border-top:1px solid var(--kenar)}
+.kalem:first-of-type{border-top:0; padding-top:2px}
+.kalem-ust{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.kalem b{font:700 16px Poppins; color:var(--murekkep)}
+.kod{font:600 12px Inter; color:var(--indigo); background:var(--yumusak); border-radius:6px; padding:1px 7px}
+.kalem p{margin:3px 0 7px; font-size:14px; color:var(--soluk)}
+.urunler{display:flex; gap:6px; flex-wrap:wrap}
+.urun{display:inline-flex; align-items:center; gap:6px; font:600 12px Inter; color:var(--murekkep); padding:3px 10px 3px 8px; border:1px solid var(--kenar); border-radius:999px; background:#fff}
+.urun i{width:8px; height:8px; border-radius:50%}
+.yok{font:500 12px Inter; color:var(--soluk); font-style:italic}
+
+/* Alan becerileri: ders ızgarası */
+.dersler{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px}
+.ders{border:1px solid var(--kenar); border-radius:16px; padding:12px 14px; background:#fff; animation:gel .3s ease}
+.ders.bos{background:transparent; border-style:dashed}
+.ders.bos b{color:var(--soluk)}
+.ders b{display:block; font:700 15px/1.3 Poppins; margin-bottom:6px}
+.tab{display:flex; flex-wrap:wrap; gap:5px; margin:0 0 8px}
+.tab span{font:600 11.5px Inter; color:var(--indigo); background:var(--yumusak); border-radius:6px; padding:2px 7px}
+.not{margin:4px 0 0; padding:10px 14px; border-radius:14px; background:#E8F1FA; color:var(--mavi-metin); font-size:14px}
+.kaynakca{margin:30px 0 0; padding-top:18px; border-top:1px solid var(--kenar); color:var(--soluk); font-size:13.5px}
+.kaynakca p{margin:0 0 6px}
+.kaynakca a{color:var(--mavi-metin)}
+@keyframes gel{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}
+@media (max-width:900px){ .izgara > .alan{grid-column:span 3} .izgara > .alan:nth-child(6){grid-column:1 / -1} }
+@media (max-width:620px){ .sayfa{padding:20px 16px 40px} .izgara > .alan, .izgara > .alan:nth-child(n){grid-column:1 / -1} .siniflar button{min-width:38px} }
+@media (prefers-reduced-motion:reduce){ *{animation:none!important; transition:none!important} }
+</style>
+</head>
+<body>
+<main class="sayfa">
+  <header>
+    <img src="img/aila_logo.png" alt="AI-LA">
+    <span class="etiket">Beceri haritası · kapsam</span>
+  </header>
+
+  <h1>Her sınıfın <em>beceri haritası</em> farklı</h1>
+  <p class="giris">Harita Türkiye Yüzyılı Maarif Modeli'nin altı bileşenine dayanır. Alan becerileri derse özgü olduğu için sınıfa göre değişir. Diğer beş alan her sınıfta aynıdır. Her kalemin altında, ona veri gönderen ekosistem ürünleri görünür.</p>
+
+  <div class="secici">
+    <span>Sınıf</span>
+    <div class="siniflar" id="siniflar" role="group" aria-label="Sınıf seç"></div>
+  </div>
+  <p class="ozet" id="ozet" aria-live="polite"></p>
+
+  <section class="izgara" id="izgara"></section>
+
+  <footer class="kaynakca">
+    <p>Kodlar: <a href="https://tymm.meb.gov.tr/" target="_blank" rel="noopener">Türkiye Yüzyılı Maarif Modeli</a> (MEB). Kavramsal Beceriler, Eğilimler ve Sosyal-Duygusal Öğrenme'nin 3'lü grupları Maarif'in kendi gruplarıdır. Okuryazarlık ve Değerler'in 3'lü grupları AI-LA gruplamasıdır; veri yine Maarif koduyla saklanır.</p>
+    <p>Ders listesi MEB haftalık ders çizelgesinden sadeleştirilmiştir. Bu sayfa kapsamı gösterir, gerçek öğrenci verisi içermez.</p>
+  </footer>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
